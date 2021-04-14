@@ -1,12 +1,17 @@
 package com.example.getorientation;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,6 +80,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAccuracyChanged(Sensor sensor, int accuracy) {            }
         };
+        sensorManager.registerListener(listener,magSensor,SensorManager.SENSOR_DELAY_UI);
+        sensorManager.registerListener(listener,accSensor,SensorManager.SENSOR_DELAY_UI);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(listener,magSensor);
+        sensorManager.unregisterListener(listener,accSensor);
+
+
+    }
+    @Override
+    protected  void onResume(){
+        super.onResume();
         sensorManager.registerListener(listener,magSensor,SensorManager.SENSOR_DELAY_UI);
         sensorManager.registerListener(listener,accSensor,SensorManager.SENSOR_DELAY_UI);
 
